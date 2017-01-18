@@ -90,14 +90,19 @@
         <property name="loginUrl" value="/html/login.html"/>
     </bean>
 
+	<bean id="logoutFilter" class="org.apache.shiro.web.filter.authc.LogoutFilter">
+     	<property name="redirectUrl" value="/html/login.html" />
+	</bean>
+
     <!-- Shiro的Web过滤器 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
         <property name="loginUrl" value="/html/login.html"/>
-        <property name="unauthorizedUrl" value="/unauthorized.jsp"/>
+        <property name="unauthorizedUrl" value="/html/unauthorized.html"/>
         <property name="filters">
             <util:map>
                 <entry key="authc" value-ref="formAuthenticationFilter"/>
+                <entry key="logout" value-ref="logoutFilter" />
             </util:map>
         </property>
         <property name="filterChainDefinitions">
@@ -109,6 +114,10 @@
             /plugins/**=anon
             /html/login.html=anon
             /html/index.html=user
+            /html/roleadmin.html=roles["roleadmin"]
+            /html/permissionadmin.html=perms["user:create"]
+            /html/useradmin.html=user
+            /logout=logout
 			/** = anon
             </value>
         </property>

@@ -55,9 +55,20 @@
 <script>
 $(document).ready(function(){
   $("#login").click(function(){
-    $.post("/Spring-shiro/loginvalidate",{"username":$("#username").val(),"password":$("#password").val()},function(d){
-    	alert(d);
-    });
-  });
+    var json={"username":$("#username").val(),"password":$("#password").val()};
+    $.ajax({  
+        url : "/Spring-shiro/loginvalidate",  
+        type : "POST",  
+        data : JSON.stringify(json), //转JSON字符串  
+        dataType: 'json',  
+        contentType:'application/json;charset=UTF-8', //contentType很重要
+        success : function(jsonstr) {
+        	if(jsonstr.state=="login success"){
+        		window.location="/Spring-shiro/html/index.html";
+        	}else
+        	alert(jsonstr.state);
+        }
+  	});
+  	});
 });
 </script>
