@@ -16,12 +16,19 @@
 	http://www.springframework.org/schema/mvc/spring-mvc.xsd
 	http://www.springframework.org/schema/aop
 	http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
-	
-<context:component-scan base-package="controller" />
+	<context:component-scan base-package="controller" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
 <mvc:annotation-driven/>
  <!-- 扫描文件（自动将service层注入） -->
 <context:component-scan base-package="service.impl"/>
 <context:component-scan base-package="realm" />
+
+<aop:config proxy-target-class="true"></aop:config>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
 <!-- 处理请求时返回json字符串的中文乱码问题 -->
     <mvc:annotation-driven>
         <mvc:message-converters>

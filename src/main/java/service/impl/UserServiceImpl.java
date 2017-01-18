@@ -11,6 +11,8 @@ import mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageHelper;
+
 import po.Role;
 import po.Role_permission;
 import po.User;
@@ -81,6 +83,12 @@ public class UserServiceImpl implements UserService {
 
 	public List<User> getallusers() {
 		return usermapper.getusers();
+	}
+
+	public List<User> getpageusers(int pagenum, int pagesize) {
+		PageHelper.startPage(pagenum,pagesize);  
+		List<User> users=usermapper.getusers();
+		return users;
 	}
 
 

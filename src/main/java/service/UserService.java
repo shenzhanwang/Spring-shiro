@@ -58,5 +58,6 @@ public interface UserService {
     public Set<String> findPermissions(String username);
     
     public List<User> getallusers();
-
+    
+    public List<User> getpageusers(int pagenum,int pagesize);
 }
