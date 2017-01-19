@@ -41,11 +41,11 @@
     <!-- 会话ID生成器 -->
     <bean id="sessionIdGenerator" class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator"/>
 
-    <!-- 会话Cookie模板 -->
+    <!-- 会话Cookie模板 关闭浏览器立即失效-->
     <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
         <constructor-arg value="sid"/>
         <property name="httpOnly" value="true"/>
-        <property name="maxAge" value="180000"/>
+        <property name="maxAge" value="-1"/>
     </bean>
 
     <!-- 会话DAO -->

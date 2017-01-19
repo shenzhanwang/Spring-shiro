@@ -42,4 +42,5 @@
     	select * from sys_roles left join sys_roles_permissions on sys_roles.roleid=sys_roles_permissions.role_id left join sys_permissions 
     	on sys_roles_permissions.permission_id=sys_permissions.permissionid where sys_roles.roleid=#{roleid}
     </select>
+    
 </mapper>

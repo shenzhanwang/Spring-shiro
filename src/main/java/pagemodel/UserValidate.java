@@ -3,6 +3,7 @@ package pagemodel;
 public class UserValidate {
 	String username;
 	String password;
+	Boolean rememberme;
 	public String getUsername() {
 		return username;
 	}
@@ -14,6 +15,12 @@ public class UserValidate {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public Boolean getRememberme() {
+		return rememberme;
+	}
+	public void setRememberme(Boolean rememberme) {
+		this.rememberme = rememberme;
 	}
 	
 }

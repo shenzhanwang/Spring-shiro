@@ -91,5 +91,14 @@ public class UserServiceImpl implements UserService {
 		return users;
 	}
 
+	public User updateuser(User u) {
+		usermapper.updateuser(u);
+		return u;
+	}
+
+	public void deleteuser(Long userid) {
+		usermapper.deleteuser(userid);
+	}
+
 
 }

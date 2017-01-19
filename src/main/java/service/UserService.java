@@ -43,11 +43,6 @@ public interface UserService {
      */
     public User findByUsername(String username);
 
-    /**
-     * 根据用户名查找其角色
-     * @param username
-     * @return
-     */
     public Set<String> findRoles(String username);
 
     /**
@@ -60,4 +55,8 @@ public interface UserService {
     public List<User> getallusers();
     
     public List<User> getpageusers(int pagenum,int pagesize);
+    
+    public User updateuser(User u);
+    
+    public void deleteuser(Long userid);
 }

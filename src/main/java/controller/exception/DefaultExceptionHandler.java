@@ -14,7 +14,7 @@ public class DefaultExceptionHandler {
      * 没有权限 异常
      */
     @ExceptionHandler({UnauthorizedException.class})
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    //@ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ModelAndView processUnauthenticatedException(NativeWebRequest request, UnauthorizedException e) {
         ModelAndView mv = new ModelAndView();
         mv.addObject("exception", e);
