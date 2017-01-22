@@ -45,7 +45,7 @@
 					<div class="form-group">
 						<div class="checkbox">
 							<label class="control-label"><b>Remember me</b>
-								<input type="checkbox" checked>
+								<input type="checkbox" id="remember" checked>
 								<i class="fa fa-square-o"></i>
 							</label>
 						</div>
@@ -63,7 +63,8 @@
 <script>
 $(document).ready(function(){
   $("#login").click(function(){
-    var json={"username":$("#username").val(),"password":$("#password").val()};
+    
+    var json={"username":$("#username").val(),"password":$("#password").val(),"rememberme":document.getElementById("remember").checked};
     $.ajax({  
         url : "/Spring-shiro/loginvalidate",  
         type : "POST",  
