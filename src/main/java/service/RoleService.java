@@ -1,5 +1,7 @@
 package service;
 
+import java.util.List;
+
 import po.Role;
 
 
@@ -22,5 +24,6 @@ public interface RoleService {
      * @param permissionIds
      */
     public void uncorrelationPermissions(Long roleId, Long... permissionIds);
-
+    
+    public List<Role> getroles();
 }

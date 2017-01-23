@@ -128,39 +128,35 @@
 	  $(document).ready(function(){
 	  	$("#adduser").click(function(){
 	  		$("#insertmodal").modal();
-	  		$("form").attr("action","adduser");
-	  		$("#username").removeAttr("readonly");
-	  		$("#username").val("");
-	  		$("#tel").val("");
-	  		$("#age").val("");
-	  		$.get("rolelist",function(a){
-	    	    	$("#roles").html("");
+	  		$.get("../roles",function(a){
+	    	    	$("#rolelist").html("");
 	    	    	for(var m=0;m<a.length;m++){
-	    	    		$("#roles").append("<div class=\"checkbox-inline\"><label><input name='rolename[]' value="+a[m].rolename+" type=\"checkbox\">"+a[m].rolename+"<i class=\"fa fa-square-o\"></i></label></div>");
+	    	    		$("#rolelist").append("<div class=\"checkbox\"><label><input name='rolename[]' value="+a[m].role+" type=\"checkbox\">"+a[m].role+"<i class=\"fa fa-square-o\"></i></label></div>");
 	    	    	}
 	    	});
-	    	$("#btn").click(function(){
+	    	
+	  	});
+	  	
+	  	$("#addbtn").click(function(){
 	    		if($("#username").val()=="")
 	    		{
 	    			alert("用户名不得为空");
 	    			return false;
 	    		}
-	    		if($("#tel").val()==""){
-	    			alert("电话不得为空");
+	    		if($("#password").val()==""||$("#repeatpwd").val()==""){
+	    			alert("密码不得为空");
 	    			return false;
 	    		}
-	    		if($("#age").val()==""){
-	    			alert("年龄不得为空");
+	    		if($("#password").val()!=$("#repeatpwd").val()){
+	    			alert("两次密码不一致");
 	    			return false;
 	    		}
-	    		$.post("adduser",$("form").serialize(),function(){
+	    		$.post("../users",$("form").serialize(),function(){
 	    			$("#userinfo").modal('hide');
 	    			alert("添加成功");
 	    			LoadAjaxContent("useradmin.html");
 	    		});
 	    	});
-	    
-	  	});
 	  	
 	  });
 	 
@@ -175,9 +171,9 @@
       <form class="form-horizontal" method="post">
       <div class="modal-body">
         	<div class="row form-group">
-			    <label for="username" class="col-sm-1 control-label">用户名</label>
+			    <label for="username2" class="col-sm-1 control-label">用户名</label>
 			    <div class="col-sm-11">
-			      <input type="text" name="username" class="form-control" id="username" readonly="readonly">
+			      <input type="text" name="username" class="form-control" id="username2" readonly="readonly">
 			    </div>
         	</div>
         	<h4 class="page-header">拥有角色</h4>
@@ -189,7 +185,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" id="btn" class="btn btn-primary">保存</button>
+        <button type="button" id="updatebtn" class="btn btn-primary">保存</button>
       </div>
       </form>
     </div>
@@ -206,21 +202,32 @@
       <form class="form-horizontal" method="post">
       <div class="modal-body">
         	<div class="row form-group">
-			    <label for="username" class="col-sm-1 control-label">用户名</label>
-			    <div class="col-sm-11">
-			      <input type="text" name="username" class="form-control" id="username" readonly="readonly">
+			    <label for="username" class="col-sm-2 control-label">用户名</label>
+			    <div class="col-sm-10">
+			      <input type="text" name="username" class="form-control" id="username">
+			    </div>
+        	</div>
+        	<div class="row form-group">
+			    <label for="username" class="col-sm-2 control-label">密码</label>
+			    <div class="col-sm-10">
+			      <input type="text" name="password" class="form-control" id="password">
+			    </div>
+        	</div>
+        	<div class="row form-group">
+			    <label for="username" class="col-sm-2 control-label">重复密码</label>
+			    <div class="col-sm-10">
+			      <input type="text" name="repeatpwd" class="form-control" id="repeatpwd">
 			    </div>
         	</div>
         	<h4 class="page-header">拥有角色</h4>
         	<div class="row form-group">
-					<div class="col-sm-12" id="roles">
+					<div class="col-sm-12" id="rolelist">
 					</div>
 			</div>
-			<p>新用户初始密码为1234</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" id="btn" class="btn btn-primary">保存</button>
+        <button type="button" id="addbtn" class="btn btn-primary">保存</button>
       </div>
       </form>
     </div>
