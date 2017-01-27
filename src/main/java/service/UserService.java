@@ -59,4 +59,8 @@ public interface UserService {
     public User updateuser(User u);
     
     public void deleteuser(Long userid);
+
+	public User getUser(Long uid);
+	
+	public void deleteuserroles(Long uid);
 }

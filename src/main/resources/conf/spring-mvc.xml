@@ -46,6 +46,12 @@
                         <value>application/json;charset=UTF-8</value>  
                     </list>  
                 </property>  
+                <property name="features">
+		          <array>
+		            <value>WriteMapNullValue</value>
+		            <value>WriteNullStringAsEmpty</value>
+		          </array>
+		        </property>
             </bean>  
         </mvc:message-converters>
     </mvc:annotation-driven>

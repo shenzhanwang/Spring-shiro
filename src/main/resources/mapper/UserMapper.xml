@@ -24,7 +24,7 @@
     
     <select id="getUserByid" resultMap="userMap">
     	select * from sys_users left join sys_users_roles on sys_users.id=sys_users_roles.user_id left join sys_roles on sys_users_roles.role_id=sys_roles.roleid
-		where sys_users.userid=#{userid}
+		where sys_users.id=#{userid}
     </select>
     
     <select id="getUserByusername" resultMap="userMap">
@@ -45,7 +45,7 @@
 	  	 values (#{0},#{1})
     </insert>
     
-    <insert id="adduser" useGeneratedKeys="true" keyProperty="id" parameterType="po.User">
+    <insert id="adduser" useGeneratedKeys="true" keyProperty="userid" parameterType="po.User">
     	 insert into sys_users (username,password,locked)
 	  	 values (#{username},#{password},#{locked})
     </insert>
@@ -55,4 +55,8 @@
     		password=#{password},locked=#{locked}
     	where sys_users.id=#{id}
     </update>
+    
+    <delete id="deleteuseroles" parameterType="long">
+    	delete from sys_users_roles where user_id=#{uid}
+    </delete>
 </mapper>

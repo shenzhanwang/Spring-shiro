@@ -12,4 +12,5 @@ public interface UserMapper {
 	void adduserrole(long userid,long roleid);
 	void adduser(User user);
 	void updateuser(User user);
+	void deleteuseroles(long uid);
 }

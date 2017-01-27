@@ -9,6 +9,7 @@ import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.credential.DefaultPasswordService;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,11 +25,15 @@ import pagemodel.MSG;
 import pagemodel.UserInfo;
 import pagemodel.UserValidate;
 import po.User;
+import po.User_role;
 import service.UserService;
 @Controller
 public class UserController {
 	@Autowired
 	UserService userservice;
+	
+	@Autowired
+	DefaultPasswordService passwordservice;
 	
 	@RequestMapping(value="/users",method = RequestMethod.GET)
 	@ResponseBody
@@ -87,7 +92,16 @@ public class UserController {
 	 @RequestMapping(value="/users",method = RequestMethod.POST)
 	 @ResponseBody
 	 public User adduser(@RequestBody User u){
+		String pwd=u.getPassword();
+		String newpwd=passwordservice.encryptPassword(pwd);
+		u.setPassword(newpwd);
 		User user=userservice.createUser(u); 
+		Long uid=user.getUserid();
+		List<User_role> urlist=u.getUser_roles();
+		for(User_role ur:urlist){
+			Long roleid=ur.getRole().getRoleid();
+			userservice.correlationRoles(uid, roleid);
+		}
 		return user;
 	 }
 	 
@@ -98,18 +112,27 @@ public class UserController {
 		return user;
 	 }
 	 
+	 @RequestMapping(value="/users/{uid}",method = RequestMethod.GET)
+	 @ResponseBody
+	 public User getuser(@PathVariable Long uid){
+		User user=userservice.getUser(uid);
+		return user;
+	 }
+	 
 	 @RequestMapping(value="/users/{uid}",method = RequestMethod.DELETE)
 	 @ResponseBody
 	 public MSG deleteuser(@PathVariable Long uid){
 		 try{
 			SecurityUtils.getSubject().checkRole("admin");
 			userservice.deleteuser(uid);
+			userservice.deleteuserroles(uid);
 			return new MSG("delete success");
 		 }catch(Exception e){
 			 e.printStackTrace();
 			return new MSG("delete failed");
 		 }
 	 }
+	 
 	 
 	 
 }
