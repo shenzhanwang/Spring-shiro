@@ -52,8 +52,8 @@
     
     <update id="updateuser" parameterType="po.User">
     	update sys_users set
-    		password=#{password},locked=#{locked}
-    	where sys_users.id=#{id}
+    		locked=#{locked}
+    	where sys_users.id=#{userid}
     </update>
     
     <delete id="deleteuseroles" parameterType="long">

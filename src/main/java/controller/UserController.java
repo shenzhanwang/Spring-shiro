@@ -10,6 +10,7 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.DefaultPasswordService;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -109,6 +110,12 @@ public class UserController {
 	 @ResponseBody
 	 public User updateuser(@PathVariable Long uid,@RequestBody User u){
 		User user=userservice.updateuser(u);
+		userservice.deleteuserroles(uid);
+		List<User_role> urlist=u.getUser_roles();
+		for(User_role ur:urlist){
+			Long roleid=ur.getRole().getRoleid();
+			userservice.correlationRoles(uid, roleid);
+		}
 		return user;
 	 }
 	 
@@ -121,18 +128,23 @@ public class UserController {
 	 
 	 @RequestMapping(value="/users/{uid}",method = RequestMethod.DELETE)
 	 @ResponseBody
-	 public MSG deleteuser(@PathVariable Long uid){
+	 public MSG deleteuser(@PathVariable Long uid) throws UnauthorizedException{
 		 try{
 			SecurityUtils.getSubject().checkRole("admin");
 			userservice.deleteuser(uid);
 			userservice.deleteuserroles(uid);
 			return new MSG("delete success");
 		 }catch(Exception e){
-			 e.printStackTrace();
+			 //e.printStackTrace();
 			return new MSG("delete failed");
 		 }
 	 }
 	 
-	 
+	 @RequestMapping(value="/currentuser",method = RequestMethod.GET)
+	 @ResponseBody
+	 public MSG getcurrentuser(){
+		String u=(String)SecurityUtils.getSubject().getPrincipal();
+		return new MSG(u);
+	 }
 	 
 }

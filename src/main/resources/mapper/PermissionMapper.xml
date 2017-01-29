@@ -4,18 +4,26 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.PermissionMapper">
     <select id="getPermissions" resultType="po.Permission">
-    	select * from permission
+    	select * from sys_permissions
     </select>
-    <select id="getPermissionByname" resultType="po.Permission">
-    	select * from permission where permissionname=#{permissionname}
-    </select>
+    
     <insert id="addpermission">
-    	insert into permission (permissionname) values(#{permissisonname})
+    	insert into sys_permissions (permission,description) values(#{permission},#{description})
     </insert>
+    
     <delete id="deletepermission">
-    	delete from permission where pid=#{pid}
+    	delete from sys_permissions where permissionid=#{permissionid}
     </delete>
-    <delete id="deleteRole_permission">
-    	delete from role_permission where permissionid=#{permissionid}
+    
+    <select id="getPermissionByid" parameterType="long">
+    	select * from sys_permissions where permissionid=#{permissionid}
+    </select>
+    
+    <update id="updatePermission" parameterType="po.Permission">
+    	update sys_permissions set permission=#{permission},description=#{description} where permissionid=#{permissionid}
+    </update>
+    
+    <delete id="deletePermissionsByid" parameterType="long">
+    	delete from sys_roles_permissions where permission_id=#{permissionid}
     </delete>
 </mapper>

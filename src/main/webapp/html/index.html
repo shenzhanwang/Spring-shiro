@@ -68,7 +68,7 @@
 									<i class="fa fa-angle-down pull-right"></i>
 									<div class="user-mini pull-right">
 										<span class="welcome">Welcome,</span>
-										<span></span>
+										<span id="username"></span>
 									</div>
 								</a>
 								<ul class="dropdown-menu">
@@ -126,6 +126,7 @@
 		<!--End Content-->
 	</div>
 </div>
+
 <!--End Container-->
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <!--<script src="http://code.jquery.com/jquery.js"></script>-->
@@ -139,5 +140,14 @@
 <script src="../js/jquery.bootgrid.min.js"></script>
 <!-- All functions for this theme + document.ready processing -->
 <script src="../js/devoops.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    		$.get("../currentuser",function(d){
+    			$("#username").text(d.state);
+    		});
+    		
+});
+</script>
 </body>
 </html>

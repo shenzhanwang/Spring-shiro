@@ -86,21 +86,28 @@
 	    	    			}
 	    	    			roles=[];
 	    	    		});
-	    	    		$("#btn").click(function(){
-				    		if($("#tel").val()==""){
-				    			alert("电话不得为空");
-				    			return false;
-				    		}
-				    		if($("#age").val()==""){
-				    			alert("年龄不得为空");
-				    			return false;
-				    		}
-		    	    		$.post("updateuser/"+uid,$("form").serialize(),function(data){
-		    	    			$("#userinfo").modal('hide');
-				    			alert("修改成功");
-				    			LoadAjaxContent("useradmin.html");
-				    			history.go(0);
-		    	    		});
+	    	    		$("#updatebtn").click(function(){
+		    	    		var checked =[];
+					$('input[name="rolename[]"]:checked').each(function(){
+						var temp={"role":{"roleid":$(this).val()}};
+						checked.push(temp);
+					});
+	    		var json={"userid":uid,"locked":$("#locked").val(),"user_roles":checked};
+	    		$.ajax({  
+		        url : "../users/"+uid,  
+		        type : "PUT",  
+		        data : JSON.stringify(json), //转JSON字符串  
+		        dataType: 'json',  
+		        contentType:'application/json;charset=UTF-8', //contentType很重要
+		        success : function(result) {
+		        	alert("修改成功");
+		        	LoadAjaxContent("useradmin.html");
+		        	$("#userinfo").modal('hide');
+		        	history.go(0);
+		        }
+		        });
+		        checked =[];
+		    	    		
 		    	    	});
 	    	    	});
 	    	    	
@@ -138,7 +145,7 @@
 	  	});
 	  	
 	  	$("#addbtn").click(function(){
-	    		if($("#username").val()=="")
+	    		if($("#addusername").val()=="")
 	    		{
 	    			alert("用户名不得为空");
 	    			return false;
@@ -157,7 +164,7 @@
 						var temp={"role":{"roleid":$(this).val()}};
 						checked.push(temp);
 					});
-	    		var json={"username":$("#username").val(),"password":$("#password").val(),"locked":false,
+	    		var json={"username":$("#addusername").val(),"password":$("#password").val(),"locked":false,
 	    			"user_roles":checked};
 	    		$.ajax({  
 		        url : "../users",  
@@ -203,7 +210,10 @@
 			<div class="row form-group">
 			    <label for="locked" class="col-sm-2 control-label">是否锁定</label>
 			    <div class="col-sm-10">
-			      <input type="text" name="locked" class="form-control" id="locked">
+			      <select name="locked" id="locked">
+			      	<option value="false">否</option>
+			      	<option value="true">是</option>
+			      </select>
 			    </div>
         	</div>
       </div>
@@ -228,17 +238,17 @@
         	<div class="row form-group">
 			    <label for="username" class="col-sm-2 control-label">用户名</label>
 			    <div class="col-sm-10">
-			      <input type="text" name="username" class="form-control" id="username">
+			      <input type="text" name="username" class="form-control" id="addusername">
 			    </div>
         	</div>
         	<div class="row form-group">
-			    <label for="username" class="col-sm-2 control-label">密码</label>
+			    <label for="password" class="col-sm-2 control-label">密码</label>
 			    <div class="col-sm-10">
 			      <input type="text" name="password" class="form-control" id="password">
 			    </div>
         	</div>
         	<div class="row form-group">
-			    <label for="username" class="col-sm-2 control-label">重复密码</label>
+			    <label for="repeatpwd" class="col-sm-2 control-label">重复密码</label>
 			    <div class="col-sm-10">
 			      <input type="text" name="repeatpwd" class="form-control" id="repeatpwd">
 			    </div>
