@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import pagemodel.DataGrid;
 import pagemodel.UserInfo;
+import po.Permission;
 import po.Role;
 import po.User;
 import service.RoleService;
@@ -24,8 +25,15 @@ public class RoleController {
 	
 	@RequestMapping(value="/roles",method = RequestMethod.GET)
 	@ResponseBody
-	public List<Role> getroles(){
-		return roleservice.getroles();
+	public DataGrid<Role> getPageRoles(@RequestParam("current") int current,@RequestParam("rowCount") int rowCount){
+		DataGrid<Role> grid=new DataGrid<Role>();
+		int total=roleservice.getroles().size();
+		List<Role> list=roleservice.getpagerole(current, rowCount);
+		grid.setCurrent(current);
+		grid.setRowCount(rowCount);
+		grid.setRows(list);
+		grid.setTotal(total);
+		return grid;
 	}
 	
 }

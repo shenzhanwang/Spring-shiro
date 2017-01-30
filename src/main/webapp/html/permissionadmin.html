@@ -57,8 +57,8 @@
 		    formatters: {
 		    "commands": function(column, row)
 		    {
-		            return "<button class=\"btn btn-xs btn-default ajax-link\" onclick=\"deletepermission("+row.pid+")\" data-row-id=\"" + row.pid + "\">删除</button>";
-		    }
+		            return "<button class=\"btn btn-xs btn-default ajax-link\" onclick=\"deletepermission("+row.permissionid+")\" data-row-permissionid=\"" + row.permissionid + "\">删除</button>";
+		    } 
 	    	}
 	    
 	    }).on("loaded.rs.jquery.bootgrid", function()
@@ -70,11 +70,11 @@
 	  
 	 function deletepermission(pid){
 	 	$.ajax({
-	     type: 'GET',
-	     url: "deletepermission/"+pid,
+	     type: "DELETE",
+	     url: "../permissions/"+pid,
 	     success:function(data) {  
 	             alert("删除成功！");  
-	             LoadAjaxContent("permissionadmin");
+	             LoadAjaxContent("permissionadmin.html");
       	 }
 		});
 	 } 

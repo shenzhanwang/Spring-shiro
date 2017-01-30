@@ -49,4 +49,8 @@ public class PermissionServiceImpl implements PermissionService {
 		return list;
 	}
 
+	public void deletePermissions(Long permissionId) {
+		permissionmapper.deletePermissionsByid(permissionId);
+	}
+
 }

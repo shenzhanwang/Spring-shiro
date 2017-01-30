@@ -32,9 +32,10 @@
 					 <table id="grid-data" class="table table-condensed table-hover table-striped">
 							        <thead>
 							            <tr>
-							                <th data-column-id="rid" data-identifier="true" data-type="numeric">角色id</th>
-							                <th data-column-id="rolename">角色名</th>
-							                <th data-formatter="rights" data-column-id="rolelist">拥有权限</th>
+							                <th data-column-id="roleid" data-identifier="true" data-type="numeric">角色id</th>
+							                <th data-column-id="role">角色名</th>
+							                <th data-column-id="description">角色名</th>
+							                <th data-formatter="right" data-column-id="rolelist">拥有权限</th>
 							                <th data-formatter="commands">操作</th>
 							            </tr>
 							        </thead>
@@ -55,7 +56,7 @@
 	    	navigation:2,
   			columnSelection:false,
 		    ajax:true,
-		    url:"roles",
+		    url:"../roles",
 		    formatters: {
 		    "rights":function(column,row){
 		    	var len=row.role_permission.length;

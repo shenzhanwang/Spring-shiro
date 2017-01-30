@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.PageHelper;
+
 import po.Role;
 import service.RoleService;
 @Service
@@ -41,6 +43,12 @@ public class RoleServiceImpl implements RoleService {
 
 	public List<Role> getroles() {
 		return rolemapper.getRoles();
+	}
+
+	public List<Role> getpagerole(int pagenum, int pagesize) {
+		PageHelper.startPage(pagenum,pagesize);
+		List<Role> list=rolemapper.getRoles();
+		return list;
 	}
 
 

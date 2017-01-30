@@ -26,4 +26,6 @@ public interface RoleService {
     public void uncorrelationPermissions(Long roleId, Long... permissionIds);
     
     public List<Role> getroles();
+    
+    public List<Role> getpagerole(int pagenum, int pagesize);
 }

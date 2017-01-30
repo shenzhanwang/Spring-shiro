@@ -39,6 +39,7 @@ public class PermissionController {
 	@ResponseBody
 	public MSG deletepermission(@PathVariable("pid") Long pid){
 		permissionservice.deletePermission(pid);
+		permissionservice.deletePermissions(pid);
 		return new MSG("success");
 	}
 	
