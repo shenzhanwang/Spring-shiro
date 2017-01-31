@@ -53,5 +53,9 @@ public class RoleServiceImpl implements RoleService {
 		return list;
 	}
 
+	public void deleteroles(Long roleid) {
+		rolemapper.deleteroles(roleid);
+	}
+
 
 }

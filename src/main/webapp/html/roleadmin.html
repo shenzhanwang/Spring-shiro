@@ -69,7 +69,7 @@
 		    "commands": function(column, row)
 		    {
 		            return "<button class=\"btn btn-xs btn-default ajax-link command-run1\" data-row-id=\"" + row.rid + "\">修改</button>"+
-		            "<button class=\"btn btn-xs btn-default ajax-link\" onclick=\"deleterole("+row.rid+")\" data-row-id=\"" + row.rid + "\">删除</button>";
+		            "<button class=\"btn btn-xs btn-default ajax-link\" onclick=\"deleterole("+row.roleid+")\" data-row-id=\"" + row.roleid + "\">删除</button>";
 		    }
 	    	}
 	    
@@ -126,11 +126,11 @@
 	  
 	 function deleterole(rid){
 	 	$.ajax({
-	     type: 'GET',
-	     url: "deleterole/"+rid ,
+	     type: 'DELETE',
+	     url: "../roles/"+rid ,
 	     success:function(data) {  
 	             alert("删除成功！");  
-	             LoadAjaxContent("roleadmin");
+	             LoadAjaxContent("roleadmin.html");
       	 }
 		});
 	 } 

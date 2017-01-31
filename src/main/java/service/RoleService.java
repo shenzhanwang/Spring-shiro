@@ -28,4 +28,6 @@ public interface RoleService {
     public List<Role> getroles();
     
     public List<Role> getpagerole(int pagenum, int pagesize);
+    
+    public void deleteroles(Long roleid);//删除该角色的所有权限关联
 }
