@@ -22,23 +22,25 @@ public class RoleServiceImpl implements RoleService {
 	RoleMapper rolemapper;
 	
 	public Role createRole(Role role) {
-		// TODO Auto-generated method stub
-		return null;
+		rolemapper.addRole(role);
+		return role;
 	}
 
 	public void deleteRole(Long roleId) {
-		// TODO Auto-generated method stub
-		
+		rolemapper.deleterole(roleId);
 	}
 
 	public void correlationPermissions(Long roleId, Long... permissionIds) {
-		// TODO Auto-generated method stub
+		for(Long pid:permissionIds){
+			rolemapper.addRolePermission(roleId, pid);
+		}
 		
 	}
 
 	public void uncorrelationPermissions(Long roleId, Long... permissionIds) {
-		// TODO Auto-generated method stub
-		
+		for(Long pid:permissionIds){
+			rolemapper.deleterole_permission(roleId, pid);
+		}
 	}
 
 	public List<Role> getroles() {

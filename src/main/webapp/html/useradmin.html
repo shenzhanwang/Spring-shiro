@@ -76,7 +76,7 @@
 	    	    			var role=user_role[a].role.role;
 	    	    			roles.push(role);
 	    	    		}
-	    	    		$.get("../roles",function(a){
+	    	    		$.get("../allroles",function(a){
 	    	    			$("#roles").html("");
 	    	    			for(var m=0;m<a.length;m++){
 	    	    				if(roles.indexOf(a[m].role)<0)
@@ -135,7 +135,7 @@
 	  $(document).ready(function(){
 	  	$("#adduser").click(function(){
 	  		$("#insertmodal").modal();
-	  		$.get("../roles",function(a){
+	  		$.get("../allroles",function(a){
 	    	    	$("#rolelist").html("");
 	    	    	for(var m=0;m<a.length;m++){
 	    	    		$("#rolelist").append("<div class=\"checkbox\"><label><input name='rolename[]' value="+a[m].roleid+" type=\"checkbox\">"+a[m].role+"<i class=\"fa fa-square-o\"></i></label></div>");

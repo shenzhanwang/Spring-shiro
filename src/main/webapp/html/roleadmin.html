@@ -35,7 +35,7 @@
 							                <th data-column-id="roleid" data-identifier="true" data-type="numeric">角色id</th>
 							                <th data-column-id="role">角色名</th>
 							                <th data-column-id="description">角色名</th>
-							                <th data-formatter="right" data-column-id="rolelist">拥有权限</th>
+							                <th data-formatter="rights" data-column-id="role_permissions">拥有权限</th>
 							                <th data-formatter="commands">操作</th>
 							            </tr>
 							        </thead>
@@ -59,10 +59,10 @@
 		    url:"../roles",
 		    formatters: {
 		    "rights":function(column,row){
-		    	var len=row.role_permission.length;
+		    	var len=row.role_permissions.length;
 		    	var str="";
 		    	for(var t=0;t<len;t++)
-		    		str+=row.role_permission[t].permission.permissionname+',';
+		    		str+=row.role_permissions[t].permission.permission+',';
 		    	str=str.substring(0,str.length-1);
 				return str;
 		    },
@@ -138,13 +138,10 @@
 	  $(document).ready(function(){
 	  	$("#addrole").click(function(){
 	  		$("#roleinfo").modal();
-	  		$("form").attr("action","adduser");
-	  		$("#rolename").removeAttr("readonly");
-	  		$("#rolename").val("");
-	  		$.get("permissionlist",function(a){
+	  		$.get("../allpermissions",function(a){
 	    	    	$("#roles").html("");
 	    	    	for(var m=0;m<a.length;m++){
-	    	    		$("#roles").append("<div class=\"checkbox-inline\"><label><input name='permissionname[]' value="+a[m].permissionname+" type=\"checkbox\">"+a[m].permissionname+"<i class=\"fa fa-square-o\"></i></label></div>");
+	    	    		$("#roles").append("<div class=\"checkbox-inline\"><label><input name='permissionname[]' value="+a[m].permissionid+" type=\"checkbox\">"+a[m].permission+"<i class=\"fa fa-square-o\"></i></label></div>");
 	    	    	}
 	    	});
 	    	$("#btn").click(function(){
@@ -163,12 +160,30 @@
 	    			alert("必须选择至少选择一个权限");
 	    			return false;
 	    		}
-	    		$.post("addrole",$("form").serialize(),function(){
-	    			$("#roleinfo").modal('hide');
-	    			alert("添加成功");
-	    			LoadAjaxContent("roleadmin");
-	    			history.go(0);
-	    		});
+	    		
+	    		var checked =[];
+					$('input[name="permissionname[]"]:checked').each(function(){
+						var temp={"permission":{"permissionid":$(this).val()}};
+						checked.push(temp);
+					});
+	    		var json={"role":$("#rolename").val(),"description":$("#description").val(),
+	    			"role_permissions":checked};
+	    		$.ajax({  
+		        url : "../roles",  
+		        type : "POST",  
+		        data : JSON.stringify(json), //转JSON字符串  
+		        dataType: 'json',  
+		        contentType:'application/json;charset=UTF-8', //contentType很重要
+		        success : function(result) {
+		        	alert("添加成功");
+		        	LoadAjaxContent("useradmin.html");
+		        	$("#insertmodal").modal('hide');
+		        	history.go(0);
+		        	//LoadAjaxContent("useradmin.html");
+		        }
+		        });
+		        checked =[];
+	    		
 	    	});
 	    
 	  	});
@@ -181,14 +196,20 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">编辑角色信息</h4>
+        <h4 class="modal-title" id="myModalLabel">添加角色信息</h4>
       </div>
       <form class="form-horizontal" method="post">
       <div class="modal-body">
         	<div class="row form-group">
 			    <label for="rolename" class="col-sm-1 control-label">角色名</label>
 			    <div class="col-sm-11">
-			      <input type="text" name="rolename" class="form-control" id="rolename" readonly="readonly">
+			      <input type="text" name="rolename" class="form-control" id="rolename">
+			    </div>
+        	</div>
+        	<div class="row form-group">
+			    <label for="description" class="col-sm-1 control-label">描述</label>
+			    <div class="col-sm-11">
+			      <input type="text" name="description" class="form-control" id="description">
 			    </div>
         	</div>
         	<h4 class="page-header">拥有权限</h4>

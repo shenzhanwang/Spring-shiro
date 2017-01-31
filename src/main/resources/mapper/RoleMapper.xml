@@ -17,15 +17,16 @@
         </collection>
     </resultMap>
 
-	<select id="getRoles" resultType="po.Role">
-		select * from sys_roles
+	<select id="getRoles" resultMap="roleMap">
+		select * from sys_roles left join sys_roles_permissions on sys_roles.roleid=sys_roles_permissions.role_id left join sys_permissions 
+    	on sys_roles_permissions.permission_id=sys_permissions.permissionid
 	</select>
 
-    <insert id="addRole" useGeneratedKeys="true" keyProperty="rid" parameterType="po.Role">
+    <insert id="addRole" useGeneratedKeys="true" keyProperty="roleid" parameterType="po.Role">
     	insert into sys_roles (role,description) values(#{role},#{description}) 
     </insert>
     
-    <insert id="addRolePermission" useGeneratedKeys="true" keyProperty="rpid" parameterType="po.Role_permission">
+    <insert id="addRolePermission" useGeneratedKeys="true"  parameterType="po.Role_permission">
     	insert into sys_roles_permissions(role_id,permission_id)
     	values (#{0},#{1})
     </insert>
@@ -35,8 +36,12 @@
     </delete>
     
     <delete id="deleterole_permission" parameterType="long">
-    	delete from sys_roles_permissions where roleid=#{roleid}
+    	delete from sys_roles_permissions where role_id=#{0} and permission_id={1}
     </delete> 
+    
+    <delete id="deleteroles" parameterType="long">
+    	delete from sys_roles_permissions where role_id=#{0}
+    </delete>
     
     <select id="getRolebyid" parameterType="int" resultMap="roleMap">
     	select * from sys_roles left join sys_roles_permissions on sys_roles.roleid=sys_roles_permissions.role_id left join sys_permissions 

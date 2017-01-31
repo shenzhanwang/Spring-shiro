@@ -35,6 +35,13 @@ public class PermissionController {
 		return grid;
 	}
 	
+	@RequestMapping(value="/allpermissions",method = RequestMethod.GET)
+	@ResponseBody
+	public List<Permission> getallpermissions(){
+		List<Permission> list=permissionservice.getPermissions();
+		return list;
+	}
+	
 	@RequestMapping(value="/permissions/{pid}",method = RequestMethod.DELETE)
 	@ResponseBody
 	public MSG deletepermission(@PathVariable("pid") Long pid){
