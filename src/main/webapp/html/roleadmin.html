@@ -68,7 +68,7 @@
 		    },
 		    "commands": function(column, row)
 		    {
-		            return "<button class=\"btn btn-xs btn-default ajax-link command-run1\" data-row-id=\"" + row.rid + "\">修改</button>"+
+		            return "<button class=\"btn btn-xs btn-default ajax-link command-run1\" data-row-id=\"" + row.roleid + "\">修改</button>"+
 		            "<button class=\"btn btn-xs btn-default ajax-link\" onclick=\"deleterole("+row.roleid+")\" data-row-id=\"" + row.roleid + "\">删除</button>";
 		    }
 	    	}
@@ -77,44 +77,61 @@
 	    		{
 	    	    grid.find(".command-run1").on("click", function(e)
 	    	    {
-	    	    	$("#roleinfo").modal();
+	    	    	$("#updaterole").modal();
 	    	    	var rid=$(this).data("row-id");
-	    	    	$.get("roleinfo/"+rid,function(data){
-	    	    		$("#rolename").val(data.rolename);
-	    	    		var role_permission=data.role_permission;
+	    	    	$.get("../roles/"+rid,function(data){
+	    	    		$("#role").val(data.role);
+	    	    		$("#desc").val(data.description);
+	    	    		var role_permission=data.role_permissions;
 	    	    		var roles=[];
 	    	    		for(var a=0;a<role_permission.length;a++){
-	    	    			var name=role_permission[a].permission.permissionname;
+	    	    			var name=role_permission[a].permission.permission;
 	    	    			roles.push(name);
 	    	    		}
-	    	    		$.get("permissionlist",function(a){
-	    	    			$("#roles").html("");
+	    	    		$.get("../allpermissions",function(a){
+	    	    			$("#rolelist").html("");
 	    	    			for(var m=0;m<a.length;m++){
-	    	    				if(roles.indexOf(a[m].permissionname)<0)
-	    	    				$("#roles").append("<div class=\"checkbox-inline\"><label><input name='permissionname[]' value="+a[m].permissionname+" type=\"checkbox\">"+a[m].permissionname+"<i class=\"fa fa-square-o\"></i></label></div>");
+	    	    				if(roles.indexOf(a[m].permission)<0)
+	    	    				$("#rolelist").append("<div class=\"checkbox-inline\"><label><input name='permissionname[]' value="+a[m].permissionid+" type=\"checkbox\">"+a[m].permission+"<i class=\"fa fa-square-o\"></i></label></div>");
 	    	    				else
-	    	    				$("#roles").append("<div class=\"checkbox-inline\"><label><input name='permissionname[]' value="+a[m].permissionname+" type=\"checkbox\" checked=\"checked\">"+a[m].permissionname+"<i class=\"fa fa-square-o\"></i></label></div>");
+	    	    				$("#rolelist").append("<div class=\"checkbox-inline\"><label><input name='permissionname[]' value="+a[m].permissionid+" type=\"checkbox\" checked=\"checked\">"+a[m].permission+"<i class=\"fa fa-square-o\"></i></label></div>");
 	    	    			}
 	    	    			roles=[];
 	    	    		});
-	    	    		$("#btn").click(function(){
-	    	    			var a=$("input[type='checkbox']").size();
+	    	    		$("#updatebtn").click(function(){
+	    	    			var a=$("#rolelist input[type='checkbox']").size();
 				    		var flag=false;
 				    		for(var m=0;m<a;m++){
-				    			if($("input[type='checkbox']").eq(m).is(':checked'))
+				    			if($("#rolelist input[type='checkbox']").eq(m).is(':checked'))
 				    				flag=true;
 				    		}
 				    		if(!flag){
 				    			alert("必须选择至少选择一个权限");
 				    			return false;
 				    		}
-	    	    		
-		    	    		$.post("updaterole/"+rid,$("form").serialize(),function(data){
-		    	    			$("#roleinfo").modal('hide');
-				    			alert("修改成功");
-				    			LoadAjaxContent("roleadmin");
-				    			history.go(0);
-		    	    		});
+				    		
+	    	    		var checked =[];
+					$('input[name="permissionname[]"]:checked').each(function(){
+						var temp={"permission":{"permissionid":$(this).val()}};
+						checked.push(temp);
+					});
+	    		var json={"roleid":rid,"role":$("#role").val(),"description":$("#desc").val(),
+	    			"role_permissions":checked};
+	    			
+		    	    	$.ajax({  
+					        url : "../roles/"+rid,  
+					        type : "PUT",  
+					        data : JSON.stringify(json), //转JSON字符串  
+					        dataType: 'json',  
+					        contentType:'application/json;charset=UTF-8', //contentType很重要
+					        success : function(result) {
+					        	alert("修改成功");
+					        	LoadAjaxContent("roleadmin.html");
+					        	$("#updaterole").modal('hide');
+					        	history.go(0);
+					        }
+					        });
+					        checked =[];
 		    	    	});
 	    	    	});
 	    	    	
@@ -223,6 +240,40 @@
         <button type="button" id="btn" class="btn btn-primary">保存</button>
       </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<div id="updaterole" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">修改角色信息</h4>
+      </div>
+      <div class="modal-body">
+        	<div class="row form-group">
+			    <label for="role" class="col-sm-1 control-label">角色名</label>
+			    <div class="col-sm-11">
+			      <input type="text" name="role" class="form-control" id="role">
+			    </div>
+        	</div>
+        	<div class="row form-group">
+			    <label for="desc" class="col-sm-1 control-label">描述</label>
+			    <div class="col-sm-11">
+			      <input type="text" name="desc" class="form-control" id="desc">
+			    </div>
+        	</div>
+        	<h4 class="page-header">拥有权限</h4>
+        	<div class="row form-group">
+					<div class="col-sm-12" id="rolelist">
+					</div>
+			</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" id="updatebtn" class="btn btn-primary">保存</button>
+      </div>
     </div>
   </div>
 </div>

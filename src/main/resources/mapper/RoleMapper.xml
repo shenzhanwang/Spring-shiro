@@ -48,4 +48,8 @@
     	on sys_roles_permissions.permission_id=sys_permissions.permissionid where sys_roles.roleid=#{roleid}
     </select>
     
+    <update id="updateRole" parameterType="po.Role">
+    	update sys_roles set role=#{role} ,description=#{description} where roleid=#{roleid}
+    </update>
+    
 </mapper>

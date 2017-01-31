@@ -57,5 +57,14 @@ public class RoleServiceImpl implements RoleService {
 		rolemapper.deleteroles(roleid);
 	}
 
+	public Role getrolebyid(Long roleid) {
+		return rolemapper.getRolebyid(roleid);
+	}
+
+	public Role updateRole(Role r) {
+		rolemapper.updateRole(r);
+		return r;
+	}
+
 
 }

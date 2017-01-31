@@ -68,4 +68,26 @@ public class RoleController {
 		return new MSG("success");
 	}
 	
+	@RequestMapping(value="/roles/{roleid}",method = RequestMethod.GET)
+	@ResponseBody
+	public Role getRole(@PathVariable Long roleid){
+		Role r=roleservice.getrolebyid(roleid);
+		return r;
+	}
+	
+	@RequestMapping(value="/roles/{roleid}",method = RequestMethod.PUT)
+	@ResponseBody
+	public Role updateRole(@PathVariable Long roleid,@RequestBody Role r){
+		roleservice.updateRole(r);
+		roleservice.deleteroles(roleid);
+		List<Role_permission> list=r.getRole_permissions();
+		for(Role_permission rp:list){
+			Long pid=rp.getPermission().getPermissionid();
+			roleservice.correlationPermissions(roleid, pid);
+		}
+		return r;
+	}
+	
+	
+	
 }

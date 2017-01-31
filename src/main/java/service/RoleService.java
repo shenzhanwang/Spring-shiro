@@ -30,4 +30,8 @@ public interface RoleService {
     public List<Role> getpagerole(int pagenum, int pagesize);
     
     public void deleteroles(Long roleid);//删除该角色的所有权限关联
+    
+    public Role getrolebyid(Long roleid);
+    
+    public Role updateRole(Role r);
 }
