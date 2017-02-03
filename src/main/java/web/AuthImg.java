@@ -3,11 +3,15 @@ package web;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+
 import java.io.*;
 import java.awt.*;
 import java.awt.image.*;
 import java.util.*;
+
 import javax.imageio.*;
+
+import org.apache.shiro.SecurityUtils;
 
 @WebServlet(urlPatterns={"/html/authImg"})
 public class AuthImg extends HttpServlet
@@ -71,9 +75,10 @@ public class AuthImg extends HttpServlet
 				,20 + random.nextInt(110)));
 			g.drawString(tmp , 15 * i + 10,15);
 		}
-		HttpSession session = request.getSession(true);
-		session.setAttribute("rand" , sRand);
+//		HttpSession session = request.getSession(true);
+//		session.setAttribute("rand" , sRand);
 //		System.out.println("写入session"+sRand);
+		SecurityUtils.getSubject().getSession().setAttribute("rand" , sRand);
 		g.dispose();
 		ImageIO.write(image, "JPEG", response.getOutputStream());
 	}

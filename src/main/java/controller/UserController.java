@@ -74,6 +74,10 @@ public class UserController {
 	 public MSG login(@RequestBody UserValidate userValidate) {
 		   UsernamePasswordToken token = new UsernamePasswordToken(userValidate.getUsername(), userValidate.getPassword());
 		   token.setRememberMe(userValidate.getRememberme());
+		   String rand=(String)SecurityUtils.getSubject().getSession().getAttribute("rand");
+	       if(!rand.equals(userValidate.getCode())){
+	    	   return new MSG("error code");
+	       }
 		   try {
 			   SecurityUtils.getSubject().login(token);
 			   MSG msg=new MSG("login success");

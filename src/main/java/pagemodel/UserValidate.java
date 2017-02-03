@@ -4,6 +4,7 @@ public class UserValidate {
 	String username;
 	String password;
 	Boolean rememberme;
+	String code;
 	public String getUsername() {
 		return username;
 	}
@@ -21,6 +22,12 @@ public class UserValidate {
 	}
 	public void setRememberme(Boolean rememberme) {
 		this.rememberme = rememberme;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
 	}
 	
 }

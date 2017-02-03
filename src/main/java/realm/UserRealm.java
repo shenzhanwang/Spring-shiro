@@ -1,6 +1,7 @@
 package realm;
 
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -41,7 +42,7 @@ public class UserRealm extends AuthorizingRealm {
         String username = (String)token.getPrincipal();
 
         User user = userservice.findByUsername(username);
-
+        
         if(user == null) {
             throw new UnknownAccountException();//没找到帐号
         }

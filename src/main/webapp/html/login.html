@@ -40,7 +40,7 @@
 					</div>
 					<div class="form-group">
 						<label class="control-label">验证码</label> &nbsp &nbsp &nbsp<img src="authImg" width="70" height="25">  
-						<input type="text" class="form-control" name="pic" />
+						<input type="text" id="code" class="form-control" name="pic" />
 					</div>
 					<div class="form-group">
 						<div class="checkbox">
@@ -64,7 +64,7 @@
 $(document).ready(function(){
   $("#login").click(function(){
     
-    var json={"username":$("#username").val(),"password":$("#password").val(),"rememberme":document.getElementById("remember").checked};
+    var json={"code":$("#code").val(),"username":$("#username").val(),"password":$("#password").val(),"rememberme":document.getElementById("remember").checked};
     $.ajax({  
         url : "/Spring-shiro/loginvalidate",  
         type : "POST",  
